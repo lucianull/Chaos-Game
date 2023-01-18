@@ -191,7 +191,7 @@ Hexagon <- function(distanceRatio)
   HexagonVertices[3,] <- c(3, 1, 0.4)
   HexagonVertices[4,] <- c(4, 0.75, 1)
   HexagonVertices[5,] <- c(5, 0.25, 1)
-  HexagonVertices[6,] <- c(5, 0, 0.4)
+  HexagonVertices[6,] <- c(6, 0, 0.4)
   
   Points <- matrix(NA, ncol=2, nrow = NMAX)
   RandomPointX <- runif(1, 0, 1)
@@ -207,6 +207,49 @@ Hexagon <- function(distanceRatio)
     RandomPointY <- NextPointY
   }
   return (list(HexagonVertices, Points))
+}
+
+TwoTriangles <-function(distanceRatio)
+{
+  NMAX <- 10000
+  TrianglesVertices <- matrix(NA, ncol=3, nrow = 6)
+  TrianglesVertices[1,] <- c(1, 0, 0.5)
+  TrianglesVertices[2,] <- c(2, 0.44, 0.21)
+  TrianglesVertices[3,] <- c(3, 0.34, 0.38)
+  TrianglesVertices[4,] <- c(4, 0.52, 0)
+  TrianglesVertices[5,] <- c(5, 0.9, 0.28)
+  TrianglesVertices[6,] <- c(6, 0.97, 0.91)
+  Points <- matrix(NA, ncol=2, nrow = NMAX)
+  RandomPointX <- runif(1, 0, 1)
+  RandomPointY <- runif(1, 0, 1)
+  Points[1, ] <- c(RandomPointX, RandomPointY)
+  chanceChangeTriangle <- 0.9
+  lastRun <- 1
+  for(i in 1:(NMAX - 1))
+  {
+    chanceChangeTriangle = runif(1, 0, 1)
+    if(chanceChangeTriangle >= 0.6)
+    {
+      if(lastRun == 1)
+      {
+        lastRun == 2
+      }
+      else
+      {
+        lastRun == 1
+      }
+    }
+    if(lastRun == 1)
+      RandomVertex <- sample(1:3, 1)
+    else
+      RandomVertex <- sample(4:6, 1)
+    NextPointX <- RandomPointX + (TrianglesVertices[RandomVertex, 2] - RandomPointX) * distanceRatio
+    NextPointY <- RandomPointY + (TrianglesVertices[RandomVertex, 3] - RandomPointY) * distanceRatio
+    Points[i + 1, ] <- c(NextPointX, NextPointY)
+    RandomPointX <- NextPointX
+    RandomPointY <- NextPointY
+  }
+  return (list(TrianglesVertices, Points))
 }
 
 server <- function(input, output)
@@ -225,9 +268,13 @@ server <- function(input, output)
     {
       return(Pentagon(input$dist.pentagon))
     }
-    if(input$shape =="hexagon")
+    if(input$shape == "hexagon")
     {
       return(Hexagon(input$dist.hexagon))
+    }
+    if(input$shape == "twoTriangles")
+    {
+      return(TwoTriangles(input$dist.twoTriangles))
     }
   })
   output$initialPlot <- renderPlot({
@@ -236,7 +283,15 @@ server <- function(input, output)
     Points <- figure()[[2]]
     plot(0, 0, xlim = c(0, 1), ylim = c(0, 1), col = 0, yaxt = "n", xaxt = "n", xlab = "", ylab = "", bty = "n")
     points(Points[1 : input$initialNrPoints - 1, 1], Points[1 : input$initialNrPoints - 1, 2], pch = 20, col="white")
-    points(Vertices[, 2], Vertices[, 3], pch = 20, cex = 3, col="#d1d1d1")
+    if(input$shape != "twoTriangles")
+    {
+      points(Vertices[, 2], Vertices[, 3], pch = 20, cex = 3, col="#d1d1d1")
+    }
+    else
+    {
+      points(Vertices[1:3, 2], Vertices[1:3, 3], pch = 20, cex = 3, col="#64f6ff")
+      points(Vertices[4:6, 2], Vertices[4:6, 3], pch = 20, cex = 3, col="#fbc341")
+    }
   })
   output$extendedPlot <- renderPlot({
     Vertices <- figure()[[1]]
@@ -244,7 +299,15 @@ server <- function(input, output)
     Points <- figure()[[2]]
     plot(0, 0, xlim = c(0, 1), ylim = c(0, 1), col = 0, yaxt = "n", xaxt = "n", xlab = "", ylab = "", bty = "n")
     points(Points[1 : input$extendedNrPoints - 1, 1], Points[1 : input$extendedNrPoints - 1, 2], pch = 20, col="white")
-    points(Vertices[, 2], Vertices[, 3], pch = 20, cex = 3, col="#d1d1d1")
+    if(input$shape != "twoTriangles")
+    {
+      points(Vertices[, 2], Vertices[, 3], pch = 20, cex = 3, col="#d1d1d1")
+    }
+    else
+    {
+      points(Vertices[1:3, 2], Vertices[1:3, 3], pch = 20, cex = 3, col="#64f6ff")
+      points(Vertices[4:6, 2], Vertices[4:6, 3], pch = 20, cex = 3, col="#fbc341")
+    }
   })
   output$completePlot <- renderPlot({
     Vertices <- figure()[[1]]
@@ -252,7 +315,15 @@ server <- function(input, output)
     Points <- figure()[[2]]
     plot(0, 0, xlim = c(0, 1), ylim = c(0, 1), col = 0, yaxt = "n", xaxt = "n", xlab = "", ylab = "", bty = "n")
     points(Points[1 : input$completeNrPoints - 1, 1], Points[1 : input$completeNrPoints - 1, 2], pch = 20, col="white")
-    points(Vertices[, 2], Vertices[, 3], pch = 20, cex = 3, col="#d1d1d1")
+    if(input$shape != "twoTriangles")
+    {
+      points(Vertices[, 2], Vertices[, 3], pch = 20, cex = 3, col="#d1d1d1")
+    }
+    else
+    {
+      points(Vertices[1:3, 2], Vertices[1:3, 3], pch = 20, cex = 3, col="#64f6ff")
+      points(Vertices[4:6, 2], Vertices[4:6, 3], pch = 20, cex = 3, col="#fbc341")
+    }
   })
 }
 
