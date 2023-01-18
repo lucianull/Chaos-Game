@@ -89,15 +89,15 @@ ui <- fluidPage(
       column(4,
              conditionalPanel(
                condition = "input.nrPointsRadiobutton == 1",
-               plotOutput("initialPlot", width = "600px", height = "600px")
+               plotOutput("initialPlot", width = "550px", height = "550px")
              ),
              conditionalPanel(
                condition = "input.nrPointsRadiobutton == 2",
-               plotOutput("extendedPlot", width = "600px", height = "600px")
+               plotOutput("extendedPlot", width = "550px", height = "550px")
              ),
              conditionalPanel(
                condition = "input.nrPointsRadiobutton == 3",
-               plotOutput("completePlot", width = "600px", height = "600px")
+               plotOutput("completePlot", width = "550px", height = "550px")
              )
             )
     )
@@ -131,7 +131,83 @@ Triangle <- function(distanceRatio)
   
 }
 
-# Square <- function(distanceRatio)
+Square <- function(distanceRatio)
+{
+  NMAX <- 10000
+  SquareVertices <- matrix(NA, ncol = 3, nrow = 4)
+  SquareVertices[1,] <- c(1, 0, 0)
+  SquareVertices[2,] <- c(2, 1, 0)
+  SquareVertices[3,] <- c(3, 1, 1)
+  SquareVertices[4,] <- c(3, 0, 1)
+  
+  Points <- matrix(NA, ncol=2, nrow = NMAX)
+  RandomPointX <- runif(1, 0, 1)
+  RandomPointY <- runif(1, 0, 1)
+  Points[1, ] <- c(RandomPointX, RandomPointY)
+  for(i in 1:(NMAX - 1))
+  {
+    RandomVertex <- sample(1:4, 1)
+    NextPointX <- RandomPointX + (SquareVertices[RandomVertex, 2] - RandomPointX) * distanceRatio
+    NextPointY <- RandomPointY + (SquareVertices[RandomVertex, 3] - RandomPointY) * distanceRatio
+    Points[i + 1, ] <- c(NextPointX, NextPointY)
+    RandomPointX <- NextPointX
+    RandomPointY <- NextPointY
+  }
+  return (list(SquareVertices, Points))
+}
+
+Pentagon <- function(distanceRatio)
+{
+  NMAX <- 10000
+  PentagonVertices <- matrix(NA, ncol = 3, nrow = 5)
+  PentagonVertices[1,] <- c(1, 0.2, 0)
+  PentagonVertices[2,] <- c(2, 0.81, 0)
+  PentagonVertices[3,] <- c(3, 1, 0.61)
+  PentagonVertices[4,] <- c(4, 0.5, 1)
+  PentagonVertices[5,] <- c(5, 0, 0.61)
+  
+  Points <- matrix(NA, ncol=2, nrow = NMAX)
+  RandomPointX <- runif(1, 0, 1)
+  RandomPointY <- runif(1, 0, 1)
+  Points[1, ] <- c(RandomPointX, RandomPointY)
+  for(i in 1:(NMAX - 1))
+  {
+    RandomVertex <- sample(1:5, 1)
+    NextPointX <- RandomPointX + (PentagonVertices[RandomVertex, 2] - RandomPointX) * distanceRatio
+    NextPointY <- RandomPointY + (PentagonVertices[RandomVertex, 3] - RandomPointY) * distanceRatio
+    Points[i + 1, ] <- c(NextPointX, NextPointY)
+    RandomPointX <- NextPointX
+    RandomPointY <- NextPointY
+  }
+  return (list(PentagonVertices, Points))
+}
+
+Hexagon <- function(distanceRatio)
+{
+  NMAX <- 10000
+  HexagonVertices <- matrix(NA, ncol = 3, nrow = 6)
+  HexagonVertices[1,] <- c(1, 0.25, 0)
+  HexagonVertices[2,] <- c(2, 0.75, 0)
+  HexagonVertices[3,] <- c(3, 1, 0.4)
+  HexagonVertices[4,] <- c(4, 0.75, 1)
+  HexagonVertices[5,] <- c(5, 0.25, 1)
+  HexagonVertices[6,] <- c(5, 0, 0.4)
+  
+  Points <- matrix(NA, ncol=2, nrow = NMAX)
+  RandomPointX <- runif(1, 0, 1)
+  RandomPointY <- runif(1, 0, 1)
+  Points[1, ] <- c(RandomPointX, RandomPointY)
+  for(i in 1:(NMAX - 1))
+  {
+    RandomVertex <- sample(1:6, 1)
+    NextPointX <- RandomPointX + (HexagonVertices[RandomVertex, 2] - RandomPointX) * distanceRatio
+    NextPointY <- RandomPointY + (HexagonVertices[RandomVertex, 3] - RandomPointY) * distanceRatio
+    Points[i + 1, ] <- c(NextPointX, NextPointY)
+    RandomPointX <- NextPointX
+    RandomPointY <- NextPointY
+  }
+  return (list(HexagonVertices, Points))
+}
 
 server <- function(input, output)
 {
@@ -141,27 +217,42 @@ server <- function(input, output)
     {
       return(Triangle(input$dist.triangle))
     }
+    if(input$shape == "square")
+    {
+      return(Square(input$dist.square))
+    }
+    if(input$shape == "pentagon")
+    {
+      return(Pentagon(input$dist.pentagon))
+    }
+    if(input$shape =="hexagon")
+    {
+      return(Hexagon(input$dist.hexagon))
+    }
   })
   output$initialPlot <- renderPlot({
     Vertices <- figure()[[1]]
+    par(bg="#616161")
     Points <- figure()[[2]]
     plot(0, 0, xlim = c(0, 1), ylim = c(0, 1), col = 0, yaxt = "n", xaxt = "n", xlab = "", ylab = "", bty = "n")
-    points(Points[1 : input$initialNrPoints - 1, 1], Points[1 : input$initialNrPoints - 1, 2], pch = 20, col="black")
-    points(Vertices[, 2], Vertices[, 3], pch = 20, cex = 2, col="blue")
+    points(Points[1 : input$initialNrPoints - 1, 1], Points[1 : input$initialNrPoints - 1, 2], pch = 20, col="white")
+    points(Vertices[, 2], Vertices[, 3], pch = 20, cex = 3, col="#d1d1d1")
   })
   output$extendedPlot <- renderPlot({
     Vertices <- figure()[[1]]
+    par(bg="#616161")
     Points <- figure()[[2]]
     plot(0, 0, xlim = c(0, 1), ylim = c(0, 1), col = 0, yaxt = "n", xaxt = "n", xlab = "", ylab = "", bty = "n")
-    points(Points[1 : input$extendedNrPoints - 1, 1], Points[1 : input$extendedNrPoints - 1, 2], pch = 20, col="black")
-    points(Vertices[, 2], Vertices[, 3], pch = 20, cex = 2, col="blue")
+    points(Points[1 : input$extendedNrPoints - 1, 1], Points[1 : input$extendedNrPoints - 1, 2], pch = 20, col="white")
+    points(Vertices[, 2], Vertices[, 3], pch = 20, cex = 3, col="#d1d1d1")
   })
   output$completePlot <- renderPlot({
     Vertices <- figure()[[1]]
+    par(bg="#616161")
     Points <- figure()[[2]]
     plot(0, 0, xlim = c(0, 1), ylim = c(0, 1), col = 0, yaxt = "n", xaxt = "n", xlab = "", ylab = "", bty = "n")
-    points(Points[1 : input$completeNrPoints - 1, 1], Points[1 : input$completeNrPoints - 1, 2], pch = 20, col="black")
-    points(Vertices[, 2], Vertices[, 3], pch = 20, cex = 2, col="blue")
+    points(Points[1 : input$completeNrPoints - 1, 1], Points[1 : input$completeNrPoints - 1, 2], pch = 20, col="white")
+    points(Vertices[, 2], Vertices[, 3], pch = 20, cex = 3, col="#d1d1d1")
   })
 }
 
