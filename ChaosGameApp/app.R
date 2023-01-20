@@ -16,8 +16,37 @@ ui <- fluidPage(
                                     'Square' = 'square',
                                     'Pentagon' = 'pentagon',
                                     'Hexagon' = 'hexagon',
+<<<<<<< HEAD
+                                    'Barnsley Fern' ='barnsleyFern')
+=======
                                     'Two Triangles' ='twoTriangles')
+>>>>>>> 7b03e1ce56e8b1c197d6a00112d08348ffd827b4
              ), selected = 'triangle'),
+             
+             conditionalPanel(
+               condition = "input.shape =='pentagon'",
+               selectizeInput('ruleset', h5(tags$b('Rules')), choices = list(
+                 "Rules" = c('Rule 1' = 'rule1',
+                                      'Rule 2' = 'rule2')
+             ), selected = 'rule1')),
+             
+             conditionalPanel(
+               condition = "input.shape =='square'",
+               selectizeInput('rulesetSquare', h5(tags$b('Rules')), choices = list(
+                 "Rules" = c('Rule 1' = 'rule1',
+                             'Rule 2' = 'rule2',
+                             'Rule 3' = 'rule3'
+                             )
+               ), selected = 'rule1')),
+             
+             conditionalPanel(
+               condition = "input.shape =='barnsleyFern'",
+               selectizeInput('rulesetFern', h5(tags$b('Rules')), choices = list(
+                 "Rules" = c('Rule 1' = 'rule1',
+                             'Rule 2' = 'rule2'
+                 )
+               ), selected = 'rule1')),
+
              conditionalPanel(
                condition = "input.shape =='triangle'",
                sliderInput("dist.triangle",
@@ -27,7 +56,7 @@ ui <- fluidPage(
                    style = "font-size: 9.5pt; color: teal", align= "left")
              ),
              conditionalPanel(
-               condition = "input.shape=='square'",
+               condition = "input.shape=='square'&& input.rulesetSquare=='rule1' ",
                sliderInput("dist.square",
                            label = h5(tags$b("Distance ratio to endpoint:")),
                            min = 0.01, max = 0.99, value = 0.67, step = 0.01),
@@ -35,11 +64,41 @@ ui <- fluidPage(
                    style = "font-size: 9.5pt; color: teal", align = "left")
              ),
              conditionalPanel(
-               condition = "input.shape=='pentagon'",
+               condition = "input.shape=='square'&& input.rulesetSquare=='rule2' ",
+               div("A point inside a square repeatedly jumps half of the distance towards a randomly chosen vertex, but the currently chosen vertex cannot neighbor the previously chosen vertex if the two previously chosen vertices are the same."),
+               sliderInput("dist.squareRule2",
+                           
+                           label = h5(tags$b("Distance ratio to endpoint:")),
+                           min = 0.01, max = 0.99, value = 0.5, step = 0.01),
+               div("For", tags$b("Square"), " ruleset 2 default value is 0.50",
+                   style = "font-size: 9.5pt; color: teal", align = "left")
+             ),
+             
+             conditionalPanel(
+               condition = "input.shape=='square'&& input.rulesetSquare=='rule3' ",
+               div("The current vertex cannot be chosen in the next iteration."),
+               sliderInput("dist.squareRule3",
+                           label = h5(tags$b("Distance ratio to endpoint:")),
+                           min = 0.01, max = 0.99, value = 0.5, step = 0.01),
+               div("For", tags$b("Square"), "ruleset 3 default value is 0.5",
+                   style = "font-size: 9.5pt; color: teal", align = "left")
+             ),
+             
+             conditionalPanel(
+               condition = "input.shape=='pentagon'&& input.ruleset=='rule1' ",
                sliderInput("dist.pentagon",
                            label = h5(tags$b("Distance ratio to endpoint:")),
                            min = 0.01, max = 0.99, value = 0.63, step = 0.01),
                div("For", tags$b("Pentagon"), "default value is 0.63",
+                   style = "font-size: 9.5pt; color: teal", align = "left")
+             ),
+             conditionalPanel(
+               condition = "input.shape=='pentagon' && input.ruleset=='rule2'",
+               div("A point inside a pentagon repeatedly jumps half of the distance towards a randomly chosen vertex, but the currently chosen vertex cannot neighbor the previously chosen vertex if the two previously chosen vertices are the same."),
+               sliderInput("dist.pentagonRule2",
+                           label = h5(tags$b("Distance ratio to endpoint:")),
+                           min = 0.01, max = 0.99, value = 0.56, step = 0.01),
+               div("For", tags$b("Pentagon"), "ruleset 2 default value is 0.56",
                    style = "font-size: 9.5pt; color: teal", align = "left")
              ),
              conditionalPanel(
@@ -50,6 +109,16 @@ ui <- fluidPage(
                div("For", tags$b("Hexagon"), "default value is 2/3 (0.67)",
                    style = "font-size: 9.5pt; color: teal", align = "left")
              ),
+<<<<<<< HEAD
+             # conditionalPanel(
+             #   condition = "input.shape =='barnsleyFern'",
+             #   sliderInput("dist.barnsleyFern",
+             #               label = h5(tags$b("Distance ratio to endpoint:")),
+             #               min = 0.01, max = 0.99, value = 0.50, step = 0.01),
+             #   div("For", tags$b("Barnsley Fern"), "default value is 0.50",
+             #       style = "font-size: 9.5pt; color: teal", align= "left")
+             # ),
+=======
              conditionalPanel(
                condition = "input.shape =='twoTriangles'",
                sliderInput("dist.twoTriangles",
@@ -58,6 +127,7 @@ ui <- fluidPage(
                div("For", tags$b("Two Triangles"), "default value is 0.50",
                    style = "font-size: 9.5pt; color: teal", align= "left")
              ),
+>>>>>>> 7b03e1ce56e8b1c197d6a00112d08348ffd827b4
              
              radioButtons("nrPointsRadiobutton", "Size", c("1-100" = "1", "100-1000" = "2", "1001-100000" = "3")),
              
@@ -77,7 +147,11 @@ ui <- fluidPage(
                condition = "input.nrPointsRadiobutton == 3",
                sliderInput("completeNrPoints",
                            label = h5(tags$b("Number of points:")),
+<<<<<<< HEAD
+                           min = 1001, max = 300000, value = 1001, step = 100)
+=======
                            min = 1001, max = 10000, value = 1001, step = 100)
+>>>>>>> 7b03e1ce56e8b1c197d6a00112d08348ffd827b4
              )
            )
     
@@ -108,7 +182,11 @@ ui <- fluidPage(
 
 Triangle <- function(distanceRatio)
 {
+<<<<<<< HEAD
+  NMAX <- 300000
+=======
   NMAX <- 10000
+>>>>>>> 7b03e1ce56e8b1c197d6a00112d08348ffd827b4
   aux <- sqrt(3)/2
   TriangleVertices <- matrix(NA, ncol = 3, nrow = 3)
   TriangleVertices[1,] <- c(1, 0, 0)
@@ -133,7 +211,11 @@ Triangle <- function(distanceRatio)
 
 Square <- function(distanceRatio)
 {
+<<<<<<< HEAD
+  NMAX <- 300000
+=======
   NMAX <- 10000
+>>>>>>> 7b03e1ce56e8b1c197d6a00112d08348ffd827b4
   SquareVertices <- matrix(NA, ncol = 3, nrow = 4)
   SquareVertices[1,] <- c(1, 0, 0)
   SquareVertices[2,] <- c(2, 1, 0)
@@ -156,9 +238,90 @@ Square <- function(distanceRatio)
   return (list(SquareVertices, Points))
 }
 
+<<<<<<< HEAD
+SquareRule2 <- function(distanceRatio)
+{
+  NMAX <- 300000
+  SquareVertices <- matrix(NA, ncol = 3, nrow = 4)
+  SquareVertices[1,] <- c(1, 0, 0)
+  SquareVertices[2,] <- c(2, 1, 0)
+  SquareVertices[3,] <- c(3, 1, 1)
+  SquareVertices[4,] <- c(3, 0, 1)
+  
+  Points <- matrix(NA, ncol=2, nrow = NMAX)
+  RandomPointX <- runif(1, 0, 1)
+  RandomPointY <- runif(1, 0, 1)
+  Points[1, ] <- c(RandomPointX, RandomPointY)
+  RandomVertexP2 <- 1
+  RandomVertexP1 <- 1
+  for(i in 1:(NMAX - 1))
+  {  
+    
+    RandomVertex <- sample(1:4, 1)
+    if(
+      ((RandomVertexP2 == RandomVertexP1) 
+       &&
+       (
+         (RandomVertex == 1 && RandomVertexP1 != 2 && RandomVertexP1 != 4)
+         ||
+         (RandomVertex == 4  && RandomVertexP1 != 1 && RandomVertexP1 != 3) 
+         ||
+         (RandomVertex != 1  && RandomVertex!= 4 && RandomVertex != RandomVertexP1 +1 &&
+          RandomVertex != RandomVertexP1 -1)
+       )
+      ) || (RandomVertexP2 != RandomVertexP1))
+    {
+      NextPointX <- RandomPointX + (SquareVertices[RandomVertex, 2] - RandomPointX) * distanceRatio
+      NextPointY <- RandomPointY + (SquareVertices[RandomVertex, 3] - RandomPointY) * distanceRatio
+      Points[i + 1, ] <- c(NextPointX, NextPointY)
+      RandomPointX <- NextPointX
+      RandomPointY <- NextPointY
+      RandomVertexP2 <- RandomVertexP1
+      RandomVertexP1 <- RandomVertex
+      
+    }
+  }
+  return (list(SquareVertices, Points))
+}
+
+SquareRule3 <- function(distanceRatio)
+{
+  NMAX <- 300000
+  SquareVertices <- matrix(NA, ncol = 3, nrow = 4)
+  SquareVertices[1,] <- c(1, 0, 0)
+  SquareVertices[2,] <- c(2, 1, 0)
+  SquareVertices[3,] <- c(3, 1, 1)
+  SquareVertices[4,] <- c(3, 0, 1)
+  
+  Points <- matrix(NA, ncol=2, nrow = NMAX)
+  RandomPointX <- runif(1, 0, 1)
+  RandomPointY <- runif(1, 0, 1)
+  Points[1, ] <- c(RandomPointX, RandomPointY)
+  PreviousVertex <- 0
+  for(i in 1:(NMAX - 1))
+  {
+    RandomVertex <- sample(1:4, 1)
+    if(RandomVertex!=PreviousVertex)
+    {
+    NextPointX <- RandomPointX + (SquareVertices[RandomVertex, 2] - RandomPointX) * distanceRatio
+    NextPointY <- RandomPointY + (SquareVertices[RandomVertex, 3] - RandomPointY) * distanceRatio
+    Points[i + 1, ] <- c(NextPointX, NextPointY)
+    RandomPointX <- NextPointX
+    RandomPointY <- NextPointY
+    PreviousVertex <- RandomVertex
+    }
+  }
+  return (list(SquareVertices, Points))
+}
+
+Pentagon <- function(distanceRatio)
+{
+  NMAX <- 300000
+=======
 Pentagon <- function(distanceRatio)
 {
   NMAX <- 10000
+>>>>>>> 7b03e1ce56e8b1c197d6a00112d08348ffd827b4
   PentagonVertices <- matrix(NA, ncol = 3, nrow = 5)
   PentagonVertices[1,] <- c(1, 0.2, 0)
   PentagonVertices[2,] <- c(2, 0.81, 0)
@@ -182,9 +345,68 @@ Pentagon <- function(distanceRatio)
   return (list(PentagonVertices, Points))
 }
 
+<<<<<<< HEAD
+
+
+PentagonRule2 <- function(distanceRatio)
+{
+  NMAX <- 300000
+  PentagonVertices <- matrix(NA, ncol = 3, nrow = 5)
+  PentagonVertices[1,] <- c(1, 0.2, 0)
+  PentagonVertices[2,] <- c(2, 0.81, 0)
+  PentagonVertices[3,] <- c(3, 1, 0.61)
+  PentagonVertices[4,] <- c(4, 0.5, 1)
+  PentagonVertices[5,] <- c(5, 0, 0.61)
+  
+  Points <- matrix(NA, ncol=2, nrow = NMAX)
+  RandomPointX <- runif(1, 0, 1)
+  RandomPointY <- runif(1, 0, 1)
+  Points[1, ] <- c(RandomPointX, RandomPointY)
+  
+  RandomVertexP2 <- 1
+  RandomVertexP1 <- 1
+  iterations <-0
+  
+  for(i in 2:(NMAX - 1))
+  {
+    RandomVertex <- sample(1:5, 1)
+    if(
+      ((RandomVertexP2 == RandomVertexP1) 
+       &&
+       (
+         (RandomVertex == 1 && RandomVertexP1 != 2 && RandomVertexP1 != 5)
+         ||
+         (RandomVertex == 5  && RandomVertexP1 != 4 && RandomVertexP1 != 1) 
+         ||
+         (RandomVertex != 1  && RandomVertex!= 5 && RandomVertex != RandomVertexP1 +1 &&
+          RandomVertex != RandomVertexP1 -1)
+       )
+      ) || (RandomVertexP2 != RandomVertexP1))
+    {
+      NextPointX <- RandomPointX + (PentagonVertices[RandomVertex, 2] - RandomPointX) * distanceRatio
+      NextPointY <- RandomPointY + (PentagonVertices[RandomVertex, 3] - RandomPointY) * distanceRatio
+      Points[i + 1, ] <- c(NextPointX, NextPointY)
+      RandomPointX <- NextPointX
+      RandomPointY <- NextPointY
+      RandomVertexP2 <- RandomVertexP1
+      RandomVertexP1 <- RandomVertex
+    }
+  }
+  
+  return (list(PentagonVertices, Points))
+}
+
+
+
+
+Hexagon <- function(distanceRatio)
+{
+  NMAX <- 300000
+=======
 Hexagon <- function(distanceRatio)
 {
   NMAX <- 10000
+>>>>>>> 7b03e1ce56e8b1c197d6a00112d08348ffd827b4
   HexagonVertices <- matrix(NA, ncol = 3, nrow = 6)
   HexagonVertices[1,] <- c(1, 0.25, 0)
   HexagonVertices[2,] <- c(2, 0.75, 0)
@@ -211,7 +433,11 @@ Hexagon <- function(distanceRatio)
 
 TwoTriangles <-function(distanceRatio)
 {
+<<<<<<< HEAD
+  NMAX <- 300000
+=======
   NMAX <- 10000
+>>>>>>> 7b03e1ce56e8b1c197d6a00112d08348ffd827b4
   TrianglesVertices <- matrix(NA, ncol=3, nrow = 6)
   TrianglesVertices[1,] <- c(1, 0, 0.5)
   TrianglesVertices[2,] <- c(2, 0.44, 0.21)
@@ -220,6 +446,101 @@ TwoTriangles <-function(distanceRatio)
   TrianglesVertices[5,] <- c(5, 0.9, 0.28)
   TrianglesVertices[6,] <- c(6, 0.97, 0.91)
   Points <- matrix(NA, ncol=2, nrow = NMAX)
+<<<<<<< HEAD
+  NextPointX <- runif(1, 0, 1)
+  NextPointY <- runif(1, 0, 1)
+  Points[1, ] <- c(0, 0)
+  
+  for(i in 1:(NMAX - 1))
+  {
+    chanceChangeTriangle = runif(1, 0, 1)
+    if(chanceChangeTriangle <= 0.01)
+    {
+      NextPointX <- 0
+      NextPointY <- 0.16 * NextPointY
+    }
+    else if(chanceChangeTriangle <= 0.86)
+    {
+      OldPointX <- NextPointX
+      OldPointY <- NextPointY
+      NextPointX <- 0.85 * NextPointX + 0.04 * NextPointY
+      NextPointY <- -0.04 * OldPointX + 0.85 * OldPointY + 1.6
+    }
+    else if(chanceChangeTriangle <= 0.93)
+    {
+      OldPointX <- NextPointX
+      OldPointY <- NextPointY
+      NextPointX <- 0.2 * NextPointX - 0.26 * NextPointY
+      NextPointY <- 0.23 * OldPointX + 0.22 * OldPointY + 1.6
+    }
+    else
+    {
+      OldPointX <- NextPointX
+      OldPointY <- NextPointY
+      NextPointX <- -0.15 * OldPointX + 0.28 * OldPointY
+      NextPointY <- 0.26 * OldPointX + 0.24 * OldPointY + 0.44
+    }
+    Points[i + 1, ] <- c(NextPointX, NextPointY)
+  }
+  for(i in 1:(NMAX - 1))
+  {
+    Points[i,1] <- Points[i,1] /5 + 0.5
+    Points[i,2] <- Points[i,2] /10
+  }
+  return (list(TrianglesVertices, Points))
+}
+
+TwoTrianglesMutated <-function(distanceRatio)
+{
+  NMAX <- 300000
+  TrianglesVertices <- matrix(NA, ncol=3, nrow = 6)
+  TrianglesVertices[1,] <- c(1, 0, 0.5)
+  TrianglesVertices[2,] <- c(2, 0.44, 0.21)
+  TrianglesVertices[3,] <- c(3, 0.34, 0.38)
+  TrianglesVertices[4,] <- c(4, 0.52, 0)
+  TrianglesVertices[5,] <- c(5, 0.9, 0.28)
+  TrianglesVertices[6,] <- c(6, 0.97, 0.91)
+  Points <- matrix(NA, ncol=2, nrow = NMAX)
+  NextPointX <- runif(1, 0, 1)
+  NextPointY <- runif(1, 0, 1)
+  Points[1, ] <- c(0, 0)
+  
+  for(i in 1:(NMAX - 1))
+  {
+    chanceChangeTriangle = runif(1, 0, 1)
+    if(chanceChangeTriangle <= 0.02)
+    {
+      NextPointX <- 0
+      NextPointY <- 0.25 * NextPointY - 0.4
+    }
+    else if(chanceChangeTriangle <= 0.86)
+    {
+      OldPointX <- NextPointX
+      OldPointY <- NextPointY
+      NextPointX <- 0.95 * NextPointX + 0.005 * NextPointY - 0.002
+      NextPointY <- -0.005 * OldPointX + 0.93 * OldPointY + 0.5
+    }
+    else if(chanceChangeTriangle <= 0.93)
+    {
+      OldPointX <- NextPointX
+      OldPointY <- NextPointY
+      NextPointX <- 0.035 * NextPointX - 0.2 * NextPointY -0.09
+      NextPointY <- 0.16 * OldPointX + 0.04 * OldPointY + 0.02
+    }
+    else
+    {
+      OldPointX <- NextPointX
+      OldPointY <- NextPointY
+      NextPointX <- -0.04 * OldPointX + 0.2 * OldPointY + 0.083
+      NextPointY <- 0.16 * OldPointX + 0.04 * OldPointY + 0.12
+    }
+    Points[i + 1, ] <- c(NextPointX, NextPointY)
+  }
+  for(i in 1:(NMAX - 1))
+  {
+    Points[i,1] <- Points[i,1] /4 + 0.5
+    Points[i,2] <- Points[i,2] /7
+=======
   RandomPointX <- runif(1, 0, 1)
   RandomPointY <- runif(1, 0, 1)
   Points[1, ] <- c(RandomPointX, RandomPointY)
@@ -248,6 +569,7 @@ TwoTriangles <-function(distanceRatio)
     Points[i + 1, ] <- c(NextPointX, NextPointY)
     RandomPointX <- NextPointX
     RandomPointY <- NextPointY
+>>>>>>> 7b03e1ce56e8b1c197d6a00112d08348ffd827b4
   }
   return (list(TrianglesVertices, Points))
 }
@@ -260,6 +582,29 @@ server <- function(input, output)
     {
       return(Triangle(input$dist.triangle))
     }
+<<<<<<< HEAD
+    if(input$shape == "square" && input$rulesetSquare == "rule1")
+    {
+      return(Square(input$dist.square))
+    }
+    if(input$shape == "square" && input$rulesetSquare == "rule2")
+    {
+      return(SquareRule2(input$dist.squareRule2))
+    }
+    if(input$shape == "square" && input$rulesetSquare == "rule3")
+    {
+      return(SquareRule3(input$dist.squareRule3))
+    }
+    if(input$shape == "pentagon" && input$ruleset == "rule1")
+    {
+      return(Pentagon(input$dist.pentagon))
+    }
+    if(input$shape == "pentagon" && input$ruleset == "rule2")
+    {
+      return(PentagonRule2(input$dist.pentagonRule2))
+    }
+    
+=======
     if(input$shape == "square")
     {
       return(Square(input$dist.square))
@@ -268,13 +613,24 @@ server <- function(input, output)
     {
       return(Pentagon(input$dist.pentagon))
     }
+>>>>>>> 7b03e1ce56e8b1c197d6a00112d08348ffd827b4
     if(input$shape == "hexagon")
     {
       return(Hexagon(input$dist.hexagon))
     }
+<<<<<<< HEAD
+    if(input$shape == "barnsleyFern" && input$rulesetFern == "rule1")
+    {
+      return(TwoTriangles(input$dist.barnsleyFern))
+    }
+    if(input$shape == "barnsleyFern" && input$rulesetFern == "rule2")
+    {
+      return(TwoTrianglesMutated(input$dist.barnsleyFern))
+=======
     if(input$shape == "twoTriangles")
     {
       return(TwoTriangles(input$dist.twoTriangles))
+>>>>>>> 7b03e1ce56e8b1c197d6a00112d08348ffd827b4
     }
   })
   output$initialPlot <- renderPlot({
@@ -283,6 +639,17 @@ server <- function(input, output)
     Points <- figure()[[2]]
     plot(0, 0, xlim = c(0, 1), ylim = c(0, 1), col = 0, yaxt = "n", xaxt = "n", xlab = "", ylab = "", bty = "n")
     points(Points[1 : input$initialNrPoints - 1, 1], Points[1 : input$initialNrPoints - 1, 2], pch = 20, col="white")
+<<<<<<< HEAD
+    if(input$shape != "barnsleyFern")
+    {
+      points(Vertices[, 2], Vertices[, 3], pch = 20, cex = 3, col="#d1d1d1")
+    }
+    # else
+    # {
+    #   points(Vertices[1:3, 2], Vertices[1:3, 3], pch = 20, cex = 3, col="#64f6ff")
+    #   points(Vertices[4:6, 2], Vertices[4:6, 3], pch = 20, cex = 3, col="#fbc341")
+    # }
+=======
     if(input$shape != "twoTriangles")
     {
       points(Vertices[, 2], Vertices[, 3], pch = 20, cex = 3, col="#d1d1d1")
@@ -292,6 +659,7 @@ server <- function(input, output)
       points(Vertices[1:3, 2], Vertices[1:3, 3], pch = 20, cex = 3, col="#64f6ff")
       points(Vertices[4:6, 2], Vertices[4:6, 3], pch = 20, cex = 3, col="#fbc341")
     }
+>>>>>>> 7b03e1ce56e8b1c197d6a00112d08348ffd827b4
   })
   output$extendedPlot <- renderPlot({
     Vertices <- figure()[[1]]
@@ -299,6 +667,17 @@ server <- function(input, output)
     Points <- figure()[[2]]
     plot(0, 0, xlim = c(0, 1), ylim = c(0, 1), col = 0, yaxt = "n", xaxt = "n", xlab = "", ylab = "", bty = "n")
     points(Points[1 : input$extendedNrPoints - 1, 1], Points[1 : input$extendedNrPoints - 1, 2], pch = 20, col="white")
+<<<<<<< HEAD
+    if(input$shape != "barnsleyFern")
+    {
+      points(Vertices[, 2], Vertices[, 3], pch = 20, cex = 3, col="#d1d1d1")
+    }
+    # else
+    # {
+    #   points(Vertices[1:3, 2], Vertices[1:3, 3], pch = 20, cex = 3, col="#64f6ff")
+    #   points(Vertices[4:6, 2], Vertices[4:6, 3], pch = 20, cex = 3, col="#fbc341")
+    # }
+=======
     if(input$shape != "twoTriangles")
     {
       points(Vertices[, 2], Vertices[, 3], pch = 20, cex = 3, col="#d1d1d1")
@@ -308,6 +687,7 @@ server <- function(input, output)
       points(Vertices[1:3, 2], Vertices[1:3, 3], pch = 20, cex = 3, col="#64f6ff")
       points(Vertices[4:6, 2], Vertices[4:6, 3], pch = 20, cex = 3, col="#fbc341")
     }
+>>>>>>> 7b03e1ce56e8b1c197d6a00112d08348ffd827b4
   })
   output$completePlot <- renderPlot({
     Vertices <- figure()[[1]]
@@ -315,6 +695,17 @@ server <- function(input, output)
     Points <- figure()[[2]]
     plot(0, 0, xlim = c(0, 1), ylim = c(0, 1), col = 0, yaxt = "n", xaxt = "n", xlab = "", ylab = "", bty = "n")
     points(Points[1 : input$completeNrPoints - 1, 1], Points[1 : input$completeNrPoints - 1, 2], pch = 20, col="white")
+<<<<<<< HEAD
+    if(input$shape != "barnsleyFern")
+    {
+      points(Vertices[, 2], Vertices[, 3], pch = 20, cex = 3, col="#d1d1d1")
+    }
+    # else
+    # {
+    #   points(Vertices[1:3, 2], Vertices[1:3, 3], pch = 20, cex = 3, col="#64f6ff")
+    #   points(Vertices[4:6, 2], Vertices[4:6, 3], pch = 20, cex = 3, col="#fbc341")
+    # }
+=======
     if(input$shape != "twoTriangles")
     {
       points(Vertices[, 2], Vertices[, 3], pch = 20, cex = 3, col="#d1d1d1")
@@ -324,6 +715,7 @@ server <- function(input, output)
       points(Vertices[1:3, 2], Vertices[1:3, 3], pch = 20, cex = 3, col="#64f6ff")
       points(Vertices[4:6, 2], Vertices[4:6, 3], pch = 20, cex = 3, col="#fbc341")
     }
+>>>>>>> 7b03e1ce56e8b1c197d6a00112d08348ffd827b4
   })
 }
 
